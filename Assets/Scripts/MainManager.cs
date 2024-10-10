@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -25,6 +26,7 @@ public class MainManager : MonoBehaviour
         if (DataStorage.Instance)
         {
             scoreTextPrefix = $"Score : {DataStorage.Instance.userName}";
+            HighScoreText.text = $"Best Score : {DataStorage.Instance.highScoreUserName} : {DataStorage.Instance.highScore}";
         }
         ScoreText.text = $"{scoreTextPrefix} : 0";
 
@@ -71,6 +73,11 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
+        if (m_Points > DataStorage.Instance.highScore)
+        {
+            DataStorage.Instance.SaveHighScore(m_Points);
+            HighScoreText.text = $"Best Score : {DataStorage.Instance.highScoreUserName} : {DataStorage.Instance.highScore}";
+        }
         ScoreText.text = $"{scoreTextPrefix} : {m_Points}";
     }
 
